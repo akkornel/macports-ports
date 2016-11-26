@@ -1,10 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
+# NOTE: When you update this port, please also update the following
+# language-binding ports: p5-sys-virt
+
 PortSystem          1.0
 
 name                libvirt
-version             1.3.5
-revision            1
+version             2.4.0
 categories          sysutils
 license             LGPL-2.1+
 platforms           darwin
@@ -15,12 +17,13 @@ description         Libvirt - The Virtualization API
 long_description    A toolkit to interact with the virtualization \
                     capabilities of modern hypervisors.
 
-homepage            https://libvirt.org
-master_sites        ${homepage}/sources/
+homepage            https://libvirt.org/
+master_sites        ${homepage}sources/
+use_xz              yes
 
-checksums           rmd160  6a2e0b288dcafaab0440c35523c6658ef9d3ea8d \
-                    sha256  93a23c44eb431da46c9458f95a66e29c9b98e37515d44b6be09e75b35ec94ac8 \
-                    size    35109092
+checksums           rmd160  ceac4c29e03f7c29113e9a926adb21c6a72cdada \
+                    sha256  b727c5f43ed3d7337ec2c2f2031ebd4207507978f68d00ad13d4f0f84aad6224 \
+                    size    13237652
 
 depends_build       port:pkgconfig \
                     port:xhtml1
@@ -36,10 +39,15 @@ depends_lib         port:curl \
 
 configure.args      --disable-silent-rules \
                     --without-apparmor \
+                    --without-attr \
                     --without-audit \
                     --without-avahi \
+                    --without-blkid \
                     --without-capng \
+                    --without-dbus \
                     --without-dtrace \
+                    --without-fuse \
+                    --without-glusterfs \
                     --without-hal \
                     --with-init-script=none \
                     --without-libpcap \
@@ -72,6 +80,21 @@ configure.args      --disable-silent-rules \
 variant avahi description {Use Avahi to advertise remote daemon} {
     depends_lib-append      port:avahi
     configure.args-replace  --without-avahi --with-avahi
+}
+
+variant fuse description {FUSE support} {
+    depends_lib-append      port:osxfuse
+    configure.args-replace  --without-fuse --with-fuse
+}
+
+variant openssl description {Use OpenSSL/LibreSSL instead of GNUTLS} {
+    depends_lib-replace     port:gnutls path:lib/libssl.dylib:openssl
+    configure.args-append   --without-gnutls --with-openssl
+}
+
+variant qemu description {Support managing QEMU VMs} {
+    depends_lib-append      port:qemu
+    configure.args-replace  --without-qemu --with-qemu
 }
 
 variant sasl description {Use Cyrus SASL for authentication} {
