@@ -1,0 +1,48 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+
+name                    hivex
+version                 1.3.13
+categories              sysutils
+license                 LGPL-2.1
+platforms               darwin
+maintainers             kornel.us:karl openmaintainer
+
+description             Read and write Windows NT+ Registry 'hive' binary files
+
+long_description        A program that is able to read Windoes NT (and later) \
+                        Registry 'hive' files\; manipulate them\; and write \
+                        them, either back to a hive file or as XML. \
+                        Manipulation can be performed using a C or Perl API, \
+                        with options available for OCaml, Python, and Ruby.
+
+homepage                http://libguestfs.org/hivex.3.html
+master_sites            http://libguestfs.org/download/hivex
+
+checksums               rmd160  30aa4a57d61353de9e2b18add8b143be019a7490 \
+                        sha256  315bc304725309dc3cc844d1d1524055530fd18a1673fe3b95ef7892d0305591
+
+depends_build           port:pkgconfig \
+                        port:perl5
+
+depends_lib             port:libxml2
+
+configure.args          --disable-silent-rules \
+                        --disable-ocaml --enable-perl \
+                        --disable-python --disable-ruby
+
+livecheck.type          regex
+livecheck.url           [lindex ${master_sites} 0]
+livecheck.regex         ${name}-(\[0-9.\]+)${extract.suffix}
+
+
+variant ocaml {
+depends_lib.append      port:ocaml port:ocaml-findlib
+configure.args-replace  --disable-ocaml --enable-ocaml
+}
+
+variant ruby {
+depends_lib.append      port:ruby
+configure.args-replace  --disable-ruby --enable-ruby
+}
