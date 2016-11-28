@@ -1,0 +1,33 @@
+--- Makefile.orig	2016-11-27 22:13:52.000000000 -0800
++++ Makefile	2016-11-27 22:33:32.000000000 -0800
+@@ -0,0 +1,30 @@
++# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
++
++# This is a simple makefile for the libguestfs appliance.
++# Copyright © 2016 A. Karl Kornel
++# 
++# This program is free software; you can redistribute it and/or modify it under 
++# the terms of the GNU General Public License as published by the Free Software 
++# Foundation; either version 2 of the License, or (at your option) any later 
++# version.
++#
++# This program is distributed in the hope that it will be useful, but WITHOUT 
++# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
++# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
++# details.
++
++# DESTDIR is meant to be overridden by Macports, but set a sane default.
++DESTDIR=/usr/local
++
++# A simple "build" target: Just create a file
++all: marker.txt
++
++marker.txt:
++	echo 'Hello' > marker.txt
++
++# The important part: Create a directory and copy files
++install: all
++	test -d ${DESTDIR}/lib/guestfs \
++		|| mkdir -p ${DESTDIR}/lib/guestfs
++	cp initrd kernel README.fixed root \
++		${DESTDIR}/lib/guestfs/
