@@ -1,0 +1,69 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+
+name                    libguestfs
+version                 1.35.14
+categories              sysutils
+license                 {LGPL-2+ GPL-2+}
+platforms               darwin
+maintainers             kornel.us:karl openmaintainer
+
+description             Access and modify guest disk images.
+
+long_description        Libguestfs is tools and a library for accessing and \
+                        modifying guest disk images. Includes guestfish and \
+                        all of the virt tools, except for virt-p2v. \
+                        Bindings are included for C, Perl, and OCaml, and are \
+                        available for other languages.
+
+homepage                http://libguestfs.org
+master_sites            ${homepage}/download/1.35-development/
+
+checksums               rmd160  8e6fdf37b4654814998127f333247d693082a627 \
+                        sha256  1b20e3d82bf6e1297ae2a254d2c3776846a2d98ad140983092a7274f872f64cc
+
+depends_build           port:p5-module-build port:p5-podlators
+
+depends_lib             port:augeas port:cdrtools port:coreutils \
+                        port:getopt port:libconfig-hr port:libmagic \
+                        port:libvirt port:libxml2 port:pcre port:osxfuse \
+                        port:perl5 port:p5-libintl-perl \
+                        port:pkgconfig port:qemu \
+                        port:ocaml port:ocaml-findlib port:yajl
+
+depends_run             port:libguestfs-appliance
+
+patchfiles              patch-cat-ls.c patch-diff-diff.c \
+                        patch-gnulib-lib-Makefile.in \
+                        patch-gnulib-lib-memstream.c \
+                        patch-gnulib-lib-memstream.h \
+                        patch-gnulib-lib-stdio.in.h \
+                        patch-gnulib-lib-stdlib.in.h \
+                        patch-mllib-dev_t-c.c patch-src-fuse.c \
+                        patch-src-libvirt-is-version.c patch-src-tsk.c \
+                        patch-test-data-blank-disks-Makefile.am \
+                        patch-test-data-blank-disks-Makefile.in
+
+configure.args          --prefix=${prefix} --disable-silent-rules \
+                        --disable-daemon --disable-appliance --disable-probes \
+                        --with-gtk=no \
+                        --disable-python --disable-ruby \
+                        --disable-haskell --disable-php --disable-erlang \
+                        --disable-lua --disable-golang --disable-gobject \
+                        CFLAGS='-I${prefix}/include' \
+                        LDFLAGS='-L${prefix}/lib'
+
+variant bashcompletion description {Dynamic completion in Macports bash} {
+depends_lib-append      port:bash-completion
+}
+
+variant sleuthkit description {Enable the guestfish filesystem-walk command} {
+depends_lib-append      port:sleuthkit
+}
+
+destroot.pre_args-append INSTALLDIRS=vendor
+
+livecheck.type          regex
+livecheck.url           [lindex ${master_sites} 0]
+livecheck.regex         ${name}-(\[0-9.\]+)${extract.suffix}

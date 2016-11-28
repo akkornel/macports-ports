@@ -1,0 +1,29 @@
+--- gnulib/lib/Makefile.in.orig	2016-11-27 01:59:21.000000000 -0800
++++ gnulib/lib/Makefile.in	2016-11-27 02:00:05.000000000 -0800
+@@ -294,7 +294,7 @@
+ 	dup-safer.lo fd-safer.lo pipe-safer.lo utimens.lo wctype-h.lo \
+ 	xmalloc.lo xalloc-die.lo xgetcwd.lo xsize.lo xstrtol.lo \
+ 	xstrtoul.lo xstrtol-error.lo xstrtoumax.lo xvasprintf.lo \
+-	xasprintf.lo
++	xasprintf.lo memstream.lo
+ libgnu_la_OBJECTS = $(am_libgnu_la_OBJECTS)
+ AM_V_lt = $(am__v_lt_@AM_V@)
+ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+@@ -1664,7 +1664,7 @@
+ 	dup-safer.c fd-safer.c pipe-safer.c utimens.c wctype-h.c \
+ 	xmalloc.c xalloc-die.c xgetcwd.c xsize.h xsize.c xstrtol.c \
+ 	xstrtoul.c xstrtol-error.c xstrtoumax.c xvasprintf.h \
+-	xvasprintf.c xasprintf.c
++	xvasprintf.c xasprintf.c memstream.c
+ libgnu_la_LIBADD = $(gl_LTLIBOBJS) @LTALLOCA@
+ libgnu_la_DEPENDENCIES = $(gl_LTLIBOBJS) @LTALLOCA@
+ EXTRA_libgnu_la_SOURCES = accept.c alloca.c at-func.c openat-proc.c \
+@@ -1687,7 +1687,7 @@
+ 	strtoimax.c strtoumax.c symlink.c at-func.c symlinkat.c \
+ 	ttyname_r.c asnprintf.c printf-args.c printf-parse.c \
+ 	vasnprintf.c asprintf.c vasprintf.c write.c xstrtoll.c \
+-	xstrtoull.c
++	xstrtoull.c memstream.c
+ libgnu_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(GETADDRINFO_LIB) \
+ 	$(HOSTENT_LIB) $(INET_NTOP_LIB) $(LIBSOCKET) \
+ 	$(LIB_CLOCK_GETTIME) $(LIB_SELECT) $(LTLIBICONV) $(LTLIBINTL) \

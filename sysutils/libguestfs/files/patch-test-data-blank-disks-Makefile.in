@@ -1,0 +1,27 @@
+--- test-data/blank-disks/Makefile.in.orig	2016-11-27 01:47:36.000000000 -0800
++++ test-data/blank-disks/Makefile.in	2016-11-27 01:47:49.000000000 -0800
+@@ -1762,21 +1762,21 @@
+ # Blank disk images in various sizes and formats.
+ blank-disk-1s.raw:
+ 	rm -f $@
+-	truncate -s 512 $@
++	gtruncate -s 512 $@
+ 
+ blank-disk-1s.qcow2:
+ 	qemu-img create -f qcow2 -o preallocation=metadata $@ 512
+ 
+ blank-disk-1K.raw:
+ 	rm -f $@
+-	truncate -s 1K $@
++	gtruncate -s 1K $@
+ 
+ blank-disk-1K.qcow2:
+ 	qemu-img create -f qcow2 -o preallocation=metadata $@ 1K
+ 
+ blank-disk-1M.raw:
+ 	rm -f $@
+-	truncate -s 1M $@
++	gtruncate -s 1M $@
+ 
+ blank-disk-1M.qcow2:
+ 	qemu-img create -f qcow2 -o preallocation=metadata $@ 1M
